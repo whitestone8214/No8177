@@ -1,0 +1,5 @@
+Name: No. 8177
+Description: A tiny library for string, file, and key-value pair database
+Version: 1
+Requires:
+Libs: -lno8177
