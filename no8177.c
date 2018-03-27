@@ -150,7 +150,7 @@ byte *no8177_string_connect(int amount, ...) {
 	va_start(_elements, amount);
 		for (_nth = 0; _nth < amount; _nth++) {
 			byte *_part = va_arg(_elements, byte *); if (_part == NULL) continue;
-			_length += strlen(va_arg(_elements, byte *));
+			_length += strlen(_part);
 		}
 	va_end(_elements);
 	

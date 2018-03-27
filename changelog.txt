@@ -1,3 +1,7 @@
+- 3:
+	- Modified:
+		- no8177_string_connect(): Do not say va_arg, instead use copied one
+
 - 2:
 	- Added:
 		- no8177_string_starts_with()
