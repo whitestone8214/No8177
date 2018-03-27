@@ -51,6 +51,8 @@ void no8177_element_drop(element *_element, int nth); /* Unallocates and removes
 void no8177_element_dispose(element *_element); /* It also unallocates all elements that are connected with given one */
 
 /* String functions. */
+byte no8177_string_starts_with(byte *string, byte *startsWith);
+byte no8177_string_ends_with(byte *string, byte *endsWith);
 byte *no8177_string_pick(byte *string, int from, int to);
 byte *no8177_string_connect(int amount, ...);
 element *no8177_string_split(byte *string, byte *by, byte retainBy); /* All 'data' inside each elements except the last one is byte *; The last element's 'data' is NULL; If 'retainBy' is 1 it will also put in 'by' as element */
@@ -69,6 +71,7 @@ byte *no8177_file_here();
 byte *no8177_file_home();
 byte *no8177_file_parent(byte *address);
 byte *no8177_file_clean_address(byte *address); /* Cleans the obfuscated file address */
+element *no8177_file_children(byte *address); /* '.' and '..' is excluded; The last element's 'data' is NULL */
 byte no8177_file_create(byte *address, byte type); /* 'type': 0 = File, 1 = Directory; Return value: 1 = Success, 0 = Failed */
 byte *no8177_file_load(byte *address, byte *result); /* 'result': 1 = Success, 0 = Failed. Will try to write on result[0]. May be NULL */
 byte no8177_file_save(byte *address, byte *data, byte overwrite); /* 'overwrite': 1 = Yes, 0 = No; Return value: 1 = Success, 0 = Failed */

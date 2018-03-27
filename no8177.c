@@ -112,6 +112,22 @@ void no8177_element_dispose(element *_element) {
 	}
 }
 
+byte no8177_string_starts_with(byte *string, byte *startsWith) {
+	if ((string == NULL) || (startsWith == NULL)) return 0;
+	if (strlen(string) < strlen(startsWith)) return 0;
+	
+	int _nth; for (_nth = 0; _nth < strlen(startsWith); _nth++) {if (string[_nth] != startsWith[_nth]) return 0;}
+	
+	return 1;
+}
+byte no8177_string_ends_with(byte *string, byte *endsWith) {
+	if ((string == NULL) || (endsWith == NULL)) return 0;
+	if (strlen(string) < strlen(endsWith)) return 0;
+	
+	int _nth; for (_nth = 0; _nth < strlen(endsWith); _nth++) {if (string[strlen(string) - 1 - _nth] != endsWith[strlen(endsWith) - 1 - _nth]) return 0;}
+	
+	return 1;
+}
 byte *no8177_string_pick(byte *string, int from, int to) {
 	if (string == NULL) return NULL;
 	if ((from < 0) || (from >= strlen(string))) return NULL;
@@ -361,6 +377,30 @@ byte *no8177_file_clean_address(byte *address) {
 	}
 	
 	return _result;
+}
+element *no8177_file_children(byte *address) {
+	if (address == NULL) return NULL;
+	
+	byte *_address = no8177_file_clean_address(address); if (_address == NULL) return NULL;
+	DIR *_stream = opendir(_address); if (_stream == NULL) {free(_address); return NULL;}
+	element *_children = no8177_element_new(NULL, NULL, NULL); if (_children == NULL) {closedir(_stream); free(_address); return NULL;}
+	
+	while (_stream != NULL) {
+		struct dirent *_child = readdir(_stream);
+		byte *_name = (byte *)strdup(_child->d_name);
+		if (_name == NULL) {no8177_element_dispose(_children); closedir(_stream); free(_address); return NULL;}
+		if ((strcmp(_name, ".") == 0) || (strcmp(_name, "..") == 0)) {free(_name); continue;}
+		
+		_children->data = (void *)no8177_string_connect(3, _address, (no8177_string_ends_with(_address, "/") == 1) ? NULL : "/", _name);
+		if (_children->data == NULL) {no8177_element_dispose(_children); closedir(_stream); free(_address); return NULL;}
+		
+		_children = no8177_element_new(_children, NULL, NULL);
+	}
+	
+	closedir(_stream);
+	free(_address);
+	
+	return no8177_element_first(_children);
 }
 byte no8177_file_create(byte *address, byte type) {
 	byte *_address = no8177_file_clean_address(address);

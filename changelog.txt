@@ -1,2 +1,8 @@
+- 2:
+	- Added:
+		- no8177_string_starts_with()
+		- no8177_string_ends_with()
+		- no8177_file_children()
+
 - 1:
 	- First version.
