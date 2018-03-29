@@ -27,7 +27,7 @@
 #include <errno.h>
 
 
-#define VERSION_NO8177 1
+#define VERSION_NO8177 4
 
 
 typedef unsigned char byte;
@@ -71,6 +71,7 @@ byte *no8177_file_here();
 byte *no8177_file_home();
 byte *no8177_file_parent(byte *address);
 byte *no8177_file_clean_address(byte *address); /* Cleans the obfuscated file address */
+byte *no8177_file_name(byte *address);
 element *no8177_file_children(byte *address); /* '.' and '..' is excluded; The last element's 'data' is NULL */
 byte no8177_file_create(byte *address, byte type); /* 'type': 0 = File, 1 = Directory; Return value: 1 = Success, 0 = Failed */
 byte *no8177_file_load(byte *address, byte *result); /* 'result': 1 = Success, 0 = Failed. Will try to write on result[0]. May be NULL */

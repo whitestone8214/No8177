@@ -1,3 +1,9 @@
+- 4:
+	- Added:
+		- no8177_file_name()
+	- Modified:
+		- no8177_file_children(): Break the loop if readdir() returns NULL
+
 - 3:
 	- Modified:
 		- no8177_string_connect(): Do not say va_arg, instead use copied one

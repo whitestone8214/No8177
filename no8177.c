@@ -378,6 +378,17 @@ byte *no8177_file_clean_address(byte *address) {
 	
 	return _result;
 }
+byte *no8177_file_name(byte *address) {
+	if (address == NULL) return NULL;
+	
+	byte *_address = no8177_file_clean_address(address); if (_address == NULL) return NULL;
+	if (strcmp(_address, "/") == 0) return _address;
+	
+	int _nth; for (_nth = strlen(_address) - 1; _nth > 0; _nth--) {if (_address[_nth] == '/') break;}
+	byte *_name = strdup(&_address[_nth + 1]); free (_address);
+	
+	return _name;
+}
 element *no8177_file_children(byte *address) {
 	if (address == NULL) return NULL;
 	
@@ -386,7 +397,7 @@ element *no8177_file_children(byte *address) {
 	element *_children = no8177_element_new(NULL, NULL, NULL); if (_children == NULL) {closedir(_stream); free(_address); return NULL;}
 	
 	while (_stream != NULL) {
-		struct dirent *_child = readdir(_stream);
+		struct dirent *_child = readdir(_stream); if (_child == NULL) break;
 		byte *_name = (byte *)strdup(_child->d_name);
 		if (_name == NULL) {no8177_element_dispose(_children); closedir(_stream); free(_address); return NULL;}
 		if ((strcmp(_name, ".") == 0) || (strcmp(_name, "..") == 0)) {free(_name); continue;}
