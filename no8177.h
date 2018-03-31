@@ -27,7 +27,7 @@
 #include <errno.h>
 
 
-#define VERSION_NO8177 4
+#define VERSION_NO8177 5
 
 
 typedef unsigned char byte;
@@ -47,6 +47,7 @@ element *no8177_element_last(element *_element);
 int no8177_element_length(element *_element);
 element *no8177_element_get(element *_element, int nth); /* Returns the element itself; -1 = The last element on a row */
 byte *no8177_element_row_to_string(element *_element, byte appendNullAtLast); /* Connects entire row into one string */
+byte no8177_element_insert(element *_element, int nth, void *data);
 void no8177_element_drop(element *_element, int nth); /* Unallocates and removes one element in a row */
 void no8177_element_dispose(element *_element); /* It also unallocates all elements that are connected with given one */
 

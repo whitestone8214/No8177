@@ -89,6 +89,21 @@ byte *no8177_element_row_to_string(element *_element, byte appendNullAtLast) {
 	
 	return _string;
 }
+byte no8177_element_insert(element *_element, int nth, void *data) {
+	if (_element == NULL) return 0;
+	
+	int _nth = nth;
+		if (_nth == -1) _nth = no8177_element_length(_element);
+		if ((_nth < 0) || (_nth > no8177_element_length(_element))) return 0;
+		
+	element *_element0 = no8177_element_new(NULL, data, NULL); if (_element0 == NULL) return 0;
+	element *_elementLeft = (_nth >= 1) ? no8177_element_get(_element, _nth - 1) : NULL;
+	element *_elementRight = (_nth <= no8177_element_length(_element) - 1) ? no8177_element_get(_element, _nth) : NULL;
+	if (_elementLeft != NULL) {_element0->previous = _elementLeft; _elementLeft->next = _element0;}
+	if (_elementRight != NULL) {_element0->next = _elementRight; _elementRight->previous = _element0;}
+	
+	return 1;
+}
 void no8177_element_drop(element *_element, int nth) {
 	element *_element0 = no8177_element_get(_element, nth);
 	if (_element0 == NULL) return;
