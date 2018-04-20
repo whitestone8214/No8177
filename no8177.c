@@ -152,7 +152,7 @@ byte *no8177_string_pick(byte *string, int from, int to) {
 	byte *_string = (byte *)malloc((to - from) + 2);
 	if (_string == NULL) return NULL;
 	int _nth; for (_nth = from; _nth <= to; _nth++) {_string[_nth - from] = string[_nth];}
-	_string[_nth] = '\0';
+	_string[_nth - from] = '\0';
 	
 	return _string;
 }
@@ -705,10 +705,24 @@ pair *no8177_database_from_string(byte *string) {
 	for (_nth = 0; _nth < strlen(string); _nth++) {
 		byte _byte = string[_nth];
 		
-		if ((_nth = strlen(string) - 1) && (_byte != '\r') && (_byte != '\n')) { /* For the case that string does not ends with newline */
+		if ((_nth == strlen(string) - 1) && (_byte != '\r') && (_byte != '\n')) { /* For the case that string does not ends with newline */
 			if (_mode == 1) break;
 			else if (_mode == 2) {free(_a); break;}
-			else if (_mode == 3) {free(_a); break;}
+			else if (_mode == 3) {
+				_nthTo = _nth;
+				_b = no8177_string_pick(string, _nthFrom, _nthTo);
+				if (_b == NULL) {free(_a); no8177_database_dispose(_database); return NULL;}
+				
+				pair *_pair = no8177_database_new(_database, NULL, NULL, NULL);
+				if (_pair == NULL) {free(_a); free(_b); no8177_database_dispose(_database); return NULL;}
+				_database->a = _a; _database->b = _b;
+				_database->next = _pair;
+				_database = _database->next;
+				
+				_mode = 0;
+				
+				break;
+			}
 			else if (_mode == 4) break;
 			else break;
 		}
@@ -722,7 +736,7 @@ pair *no8177_database_from_string(byte *string) {
 				}
 				else if ((_byte == '\r') || (_byte == '\n')) _mode = 0;
 				/*else if (_byte == '#') _mode = 5;*/
-				else {_nthFrom = _nth; _mode = 1;}
+				else {}
 			}
 			else if (_mode == 2) { /* Mode: Bridge */
 				if ((_byte == ' ') || (_byte == '\t')) continue;
@@ -739,6 +753,7 @@ pair *no8177_database_from_string(byte *string) {
 					
 					pair *_pair = no8177_database_new(_database, NULL, NULL, NULL);
 					if (_pair == NULL) {free(_a); free(_b); no8177_database_dispose(_database); return NULL;}
+					_database->next = _pair;
 					_database->a = _a; _database->b = _b;
 					_database = _database->next;
 					
@@ -758,6 +773,8 @@ pair *no8177_database_from_string(byte *string) {
 			}
 		}
 	}
+	
+	return no8177_database_first(_database);
 }
 byte *no8177_database_to_string(pair *database) {
 	if (database == NULL) return NULL;
@@ -779,7 +796,8 @@ byte *no8177_database_get_value(pair *database, byte *key) {
 	
 	pair *_database = database;
 	while (_database != NULL) {
-		if (strcmp((byte *)_database->a, key) == 0) return strdup((byte *)_database->b);
+		byte *_key = (byte *)_database->a;
+		if (_key != NULL) {if (strcmp(_key, key) == 0) return (_database->b != NULL) ? strdup((byte *)_database->b) : NULL;}
 		
 		_database = _database->next;
 	}
