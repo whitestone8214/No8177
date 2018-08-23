@@ -318,6 +318,16 @@ byte no8177_file_detail_type(byte *address) {
 	
 	byte _result = 0;
 	if ((strlen (_contents) >= 4) && (_contents[0] == 0x7f) && (_contents[1] == 'E') && (_contents[2] == 'L') && (_contents[3] == 'F')) _result = 2;
+	else if ((strlen (_contents) >= 8) && (_contents[0] == 0x89) && (_contents[1] == 0x50) && (_contents[2] == 0x4e) && (_contents[3] == 0x47) && (_contents[4] == 0x0d) && (_contents[5] == 0x0a) && (_contents[6] == 0x1a) && (_contents[7] == 0x0a)) _result = 3;
+	else if ((strlen (_contents) >= 3) && (_contents[0] == 0xff) && (_contents[1] == 0xd8) && (_contents[2] == 0xff)) _result = 4;
+	else if ((strlen (_contents) >= 4) && (_contents[0] == 'W') && (_contents[1] == 'E') && (_contents[2] == 'B') && (_contents[3] == 'P')) _result = 5;
+	else if ((strlen (_contents) >= 2) && (_contents[0] == 'B') && (_contents[1] == 'M')) _result = 6;
+	else if ((strlen (_contents) >= 6) && (_contents[0] == 'G') && (_contents[1] == 'I') && (_contents[2] == 'F') && (_contents[3] == '8') && ((_contents[4] == '7') || (_contents[4] == '9')) && (_contents[5] == 'a')) _result = 7;
+	else if ((strlen (_contents) >= 4) && (_contents[0] == 0x1a) && (_contents[1] == 0x45) && (_contents[2] == 0xdf) && (_contents[3] == 0xa3)) _result = 8;
+	else if ((strlen (_contents) >= 4) && (_contents[0] == 0x4f) && (_contents[1] == 0x67) && (_contents[2] == 0x67) && (_contents[3] == 0x53)) _result = 9;
+	else if ((strlen (_contents) >= 12) && (_contents[0] == 0) && (_contents[1] == 0) && (_contents[2] == 0) && (_contents[3] == 0x18) && (_contents[4] == 0x66) && (_contents[5] == 74) && (_contents[6] == 0x79) && (_contents[7] == 0x70) && (_contents[8] == 0x33) && (_contents[9] == 0x67) && (_contents[10] == 0x70) && (_contents[11] == 0x35)) _result = 10;
+	else if ((strlen (_contents) >= 4) && (_contents[0] == 0x6d) && (_contents[1] == 0x6f) && (_contents[2] == 0x6f) && (_contents[3] == 0x76)) _result = 11;
+	else if ((strlen (_contents) >= 3) && (_contents[0] == 0x46) && (_contents[1] == 0x4c) && (_contents[2] == 0x56)) _result = 12;
 	free (_contents);
 	
 	return _result;
