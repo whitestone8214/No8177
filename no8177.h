@@ -27,7 +27,7 @@
 #include <errno.h>
 
 
-#define VERSION_NO8177 5
+#define VERSION_NO8177 6
 
 
 typedef unsigned char byte;
@@ -65,6 +65,7 @@ byte no8177_file_can_read(byte *address); /* 1 = Exists, 0 = Not exist */
 byte no8177_file_can_write(byte *address); /* 1 = Exists, 0 = Not exist */
 byte no8177_file_can_execute(byte *address); /* 1 = Exists, 0 = Not exist */
 byte no8177_file_is_regular_file(byte *address, byte linkItself); /* 1 = Yes, 0 = No */
+byte no8177_file_detail_type(byte *address); /* 0 = Unknown, 2 = ELF */
 byte no8177_file_is_directory(byte *address, byte linkItself); /* 1 = Yes, 0 = No */
 byte no8177_file_is_symbolic_link(byte *address, byte linkItself); /* 1 = Yes, 0 = No */
 int no8177_file_size(byte *address, byte linkItself); /* -1 = No such file */

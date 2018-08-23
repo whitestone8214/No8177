@@ -309,6 +309,19 @@ byte no8177_file_is_regular_file(byte *address, byte linkItself) {
 	
 	return (S_ISREG(_tree.st_mode)) ? 1 : 0;
 }
+byte no8177_file_detail_type(byte *address) {
+	if (no8177_file_is_regular_file(address, 0) != 1) return 0;
+	if (access(address, R_OK) != 0) return 0;
+	
+	byte *_contents = no8177_file_load (address, NULL);
+	if (_contents == NULL) return 0;
+	
+	byte _result = 0;
+	if ((strlen (_contents) >= 4) && (_contents[0] == 0x7f) && (_contents[1] == 'E') && (_contents[2] == 'L') && (_contents[3] == 'F')) _result = 2;
+	free (_contents);
+	
+	return _result;
+}
 byte no8177_file_is_directory(byte *address, byte linkItself) {
 	struct stat _tree;
 	if (linkItself == 1) {if (lstat(address, &_tree) != 0) return 0;}
